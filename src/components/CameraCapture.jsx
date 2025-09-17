@@ -9,6 +9,7 @@ export default function CameraCapture({ onResult, actionLabel }) {
   const [progress, setProgress] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [snapUrl, setSnapUrl] = useState(null);
 
   useEffect(() => {
     let stream;
@@ -39,8 +40,10 @@ export default function CameraCapture({ onResult, actionLabel }) {
       canvas.height = video.videoHeight;
       ctx.drawImage(video, 0, 0);
       const img = new Image();
-      img.src = canvas.toDataURL('image/png');
+      const dataUrl = canvas.toDataURL('image/png');
+      img.src = dataUrl;
       await new Promise((r) => (img.onload = r));
+      setSnapUrl(dataUrl);
       const result = analyzeImage(img);
       setAnalysis(result);
       // draw overlay on the same canvas
@@ -67,7 +70,8 @@ export default function CameraCapture({ onResult, actionLabel }) {
       clearInterval(timer);
       const imageMeta = { width: analysis.width, height: analysis.height, capturedAt: new Date().toISOString() };
       const overlayDataUrl = canvasRef.current?.toDataURL('image/png');
-      onResult({ imageMeta, overlayDataUrl, ...analysis });
+      const sourceDataUrl = snapUrl;
+      onResult({ imageMeta, overlayDataUrl, sourceDataUrl, ...analysis });
       setBusy(false);
       setProgress(100);
     }, 900);
