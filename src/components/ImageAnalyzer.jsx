@@ -7,12 +7,16 @@ export default function ImageAnalyzer({ onResult, actionLabel }) {
   const canvasRef = useRef(null);
   const [preview, setPreview] = useState(null);
   const [analysis, setAnalysis] = useState(null);
+  const [error, setError] = useState('');
+  const [progress, setProgress] = useState(0);
+  const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     if (!preview) return;
     const img = imgRef.current;
     if (!img) return;
     const handleLoad = () => {
+      setError('');
       const result = analyzeImage(img);
       setAnalysis(result);
       drawOverlay(result);
@@ -72,9 +76,19 @@ export default function ImageAnalyzer({ onResult, actionLabel }) {
   }
 
   function handleAnalyze() {
-    if (!analysis) return;
-    const imageMeta = { width: analysis.width, height: analysis.height, capturedAt: new Date().toISOString() };
-    onResult({ imageMeta, ...analysis });
+    if (!preview) { setError('No image selected'); return; }
+    if (!analysis) { setError('Processing image...'); return; }
+    setBusy(true);
+    setProgress(0);
+    const timer = setInterval(() => setProgress((p) => Math.min(100, p + 8)), 80);
+    setTimeout(() => {
+      clearInterval(timer);
+      const imageMeta = { width: analysis.width, height: analysis.height, capturedAt: new Date().toISOString() };
+      const overlayDataUrl = canvasRef.current?.toDataURL('image/png');
+      onResult({ imageMeta, overlayDataUrl, ...analysis });
+      setBusy(false);
+      setProgress(100);
+    }, 900);
   }
 
   return (
@@ -86,11 +100,18 @@ export default function ImageAnalyzer({ onResult, actionLabel }) {
       <div className="analyzer-preview">
         {preview && (
           <div className="image-stage">
-            <img ref={imgRef} src={preview} alt="animal" style={{ display: 'none' }} />
+            <img ref={imgRef} src={preview} alt="animal" className="hidden-image" />
             <canvas ref={canvasRef} className="overlay-canvas" />
           </div>
         )}
       </div>
+      {busy && (
+        <div className="predicting" aria-live="polite" aria-busy="true">
+          <div className="spinner" />
+          <div className="progress"><div className="bar" style={{ width: `${progress}%` }} /></div>
+        </div>
+      )}
+      {error && <div className="error-text" role="alert">{error}</div>}
     </div>
   );
 }
