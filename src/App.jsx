@@ -41,12 +41,14 @@ function App() {
 
       <main className="main-content">
         {page === 'home' && (
-          <Landing title={title} onStart={() => setPage('acquire')} />
+          <Landing title={title} ctaText={t(locale, 'start')} onStart={() => setPage('acquire')} />
         )}
         {page === 'acquire' && (
           <Acquire
             onPredicted={(res) => { setLastResult(res); setPage('results'); }}
             analyzeLabel={t(locale, 'predict')}
+            uploadText={t(locale, 'upload')}
+            cameraText={t(locale, 'camera')}
           />
         )}
         {page === 'results' && lastResult && (
