@@ -58,9 +58,10 @@
 
 /* Results */
 .results-panel { display: grid; gap: 0.75rem; }
-.results-visuals { display: grid; grid-template-columns: 1fr; }
-.image-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 20px; padding: 0.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+.results-visuals { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
+.image-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 20px; padding: 0.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: grid; place-items: center; }
 .result-image { width: 100%; height: auto; border-radius: 14px; display: block; }
+.image-placeholder { width: 100%; min-height: 200px; display: grid; place-items: center; color: #6b7280; }
 .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.5rem; }
 .metric { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 0.75rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
 .scores-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.5rem; }
@@ -79,3 +80,4 @@
 @keyframes fadeSlide { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
 
 @media (max-width: 640px) { .controls { flex-direction: column; align-items: stretch; } .landing-section .hero-card { grid-template-columns: 1fr; } }
+@media (min-width: 720px) { .results-visuals { grid-template-columns: 1fr 1fr; } }
