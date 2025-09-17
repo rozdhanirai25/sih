@@ -2,17 +2,17 @@ import ImageAnalyzer from './ImageAnalyzer.jsx';
 import CameraCapture from './CameraCapture.jsx';
 import { UploadIcon, CameraIcon, PlayIcon } from './icons.jsx';
 
-export default function Acquire({ onPredicted, analyzeLabel }) {
+export default function Acquire({ onPredicted, analyzeLabel, uploadText, cameraText }) {
   return (
     <section className="acquire-section fade-slide" aria-label="Acquire Image">
       <div className="acquire-actions">
         <button className="acquire-btn" onClick={() => document.getElementById('hiddenUploadInput').click()}>
           <UploadIcon />
-          <span>Upload Image</span>
+          <span>{uploadText}</span>
         </button>
         <button className="acquire-btn" onClick={() => document.getElementById('cameraSection').scrollIntoView({ behavior: 'smooth' })}>
           <CameraIcon />
-          <span>Use Camera</span>
+          <span>{cameraText}</span>
         </button>
       </div>
 
