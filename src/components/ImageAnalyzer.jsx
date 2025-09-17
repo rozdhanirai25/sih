@@ -80,7 +80,7 @@ export default function ImageAnalyzer({ onResult, actionLabel }) {
   return (
     <div className="analyzer-container">
       <div className="analyzer-actions">
-        <input ref={inputRef} onChange={handleFile} type="file" accept="image/*" />
+        <input id="hiddenUploadInput" ref={inputRef} onChange={handleFile} type="file" accept="image/*" />
         <button className="primary-action" onClick={handleAnalyze} disabled={!analysis}>{actionLabel}</button>
       </div>
       <div className="analyzer-preview">

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { buildBpaPayload, sendToBpa } from '../services/bpaAdapter.jsx';
 import { saveOffline, listOffline, syncAll } from '../services/offlineStore.jsx';
 
-export default function ResultsView({ lastResult, endpointUrl, locale }) {
+export default function ResultsView({ lastResult, endpointUrl, locale, onBackHome }) {
   const [copied, setCopied] = useState(false);
   const payload = useMemo(() => {
     if (!lastResult) return null;
@@ -34,6 +34,16 @@ export default function ResultsView({ lastResult, endpointUrl, locale }) {
 
   return (
     <div className="results-panel">
+      <div className="results-visuals">
+        <div className="image-card">
+          {lastResult.overlayDataUrl ? (
+            <img src={lastResult.overlayDataUrl} alt="Analyzed animal" className="result-image" />
+          ) : (
+            <div className="image-placeholder">No image</div>
+          )}
+        </div>
+      </div>
+
       <div className="metrics-grid">
         <div className="metric"><span>Body length (px)</span><strong>{Math.round(lastResult.measurements.bodyLength)}</strong></div>
         <div className="metric"><span>Height at withers (px)</span><strong>{Math.round(lastResult.measurements.heightAtWithers)}</strong></div>
@@ -50,7 +60,8 @@ export default function ResultsView({ lastResult, endpointUrl, locale }) {
       <div className="export-actions">
         <button className="secondary-action" onClick={onCopy}>{copied ? 'Copied' : 'Copy JSON'}</button>
         <button className="secondary-action" onClick={onSaveOffline}>Save Offline</button>
-        <button className="primary-action" onClick={onSync}>Sync to BPA</button>
+        <button className="primary-action" onClick={onSync}>Save to BPA</button>
+        <button className="secondary-action" onClick={onBackHome}>Back to Home</button>
       </div>
 
       <pre className="json-view">{JSON.stringify(payload, null, 2)}</pre>

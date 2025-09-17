@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
 import viteLogo from '/vite.svg'
 import './App.css'
-import ImageAnalyzer from './components/ImageAnalyzer.jsx'
-import CameraCapture from './components/CameraCapture.jsx'
 import ResultsView from './components/ResultsView.jsx'
+import Landing from './components/Landing.jsx'
+import Acquire from './components/Acquire.jsx'
 import { languages, t } from './i18n/translations.jsx'
 
 function App() {
-  const [tab, setTab] = useState('upload')
+  const [page, setPage] = useState('home')
   const [locale, setLocale] = useState('en')
   const [endpointUrl, setEndpointUrl] = useState('')
   const [lastResult, setLastResult] = useState(null)
@@ -39,24 +39,18 @@ function App() {
         </div>
       </header>
 
-      <nav className="nav-tabs">
-        <button className={tab === 'upload' ? 'tab active' : 'tab'} onClick={() => setTab('upload')}>{t(locale, 'uploadTab')}</button>
-        <button className={tab === 'camera' ? 'tab active' : 'tab'} onClick={() => setTab('camera')}>{t(locale, 'cameraTab')}</button>
-        <button className={tab === 'history' ? 'tab active' : 'tab'} onClick={() => setTab('history')}>{t(locale, 'historyTab')}</button>
-      </nav>
-
       <main className="main-content">
-        {tab === 'upload' && (
-          <ImageAnalyzer onResult={setLastResult} actionLabel={t(locale, 'analyze')} />
+        {page === 'home' && (
+          <Landing title={title} onStart={() => setPage('acquire')} />
         )}
-        {tab === 'camera' && (
-          <CameraCapture onResult={setLastResult} actionLabel={t(locale, 'analyze')} />
+        {page === 'acquire' && (
+          <Acquire
+            onPredicted={(res) => { setLastResult(res); setPage('results'); }}
+            analyzeLabel={t(locale, 'predict')}
+          />
         )}
-        {(lastResult && (tab === 'upload' || tab === 'camera')) && (
-          <ResultsView lastResult={lastResult} endpointUrl={endpointUrl} locale={locale} />
-        )}
-        {tab === 'history' && (
-          <div className="history-empty">Results are saved locally for offline sync. Use Sync to send when connected.</div>
+        {page === 'results' && lastResult && (
+          <ResultsView lastResult={lastResult} endpointUrl={endpointUrl} locale={locale} onBackHome={() => setPage('home')} />
         )}
       </main>
     </div>
