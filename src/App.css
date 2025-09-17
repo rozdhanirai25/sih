@@ -53,7 +53,9 @@
 .spinner { width: 32px; height: 32px; border: 3px solid #e5e7eb; border-top-color: var(--indigo); border-radius: 50%; animation: spin 1s linear infinite; margin: 0.25rem auto; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .progress { width: 100%; height: 6px; background: #eef2ff; border-radius: 999px; overflow: hidden; }
-.progress .bar { height: 100%; background: linear-gradient(90deg, var(--indigo), #8b5cf6); border-radius: inherit; transition: width 0.2s ease; }
+.progress .bar { height: 100%; background: linear-gradient(90deg, var(--indigo), #8b5cf6); border-radius: inherit; }
+.progress.indeterminate .bar { width: 40%; animation: indeterminate 1.2s ease-in-out infinite; }
+@keyframes indeterminate { 0% { transform: translateX(-60%);} 50% { transform: translateX(40%);} 100% { transform: translateX(160%);} }
 .error-text { color: #b91c1c; background: #fee2e2; border: 1px solid #fecaca; border-radius: 12px; padding: 0.5rem 0.75rem; }
 
 /* Results */
