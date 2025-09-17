@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { t } from '../i18n/translations.jsx';
 import { buildBpaPayload, sendToBpa } from '../services/bpaAdapter.jsx';
 import { saveOffline, listOffline, syncAll } from '../services/offlineStore.jsx';
 
@@ -67,8 +68,8 @@ export default function ResultsView({ lastResult, endpointUrl, locale, onBackHom
       <div className="export-actions">
         <button className="secondary-action" onClick={onCopy}>{copied ? 'Copied' : 'Copy JSON'}</button>
         <button className="secondary-action" onClick={onSaveOffline}>Save Offline</button>
-        <button className="primary-action" onClick={onSync}>Save to BPA</button>
-        <button className="secondary-action" onClick={onBackHome}>Back to Home</button>
+        <button className="primary-action" onClick={onSync}>{t(locale, 'saveBpa')}</button>
+        <button className="secondary-action" onClick={onBackHome}>{t(locale, 'backHome')}</button>
       </div>
 
       <pre className="json-view">{JSON.stringify(payload, null, 2)}</pre>
