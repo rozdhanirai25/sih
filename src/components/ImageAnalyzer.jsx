@@ -85,7 +85,8 @@ export default function ImageAnalyzer({ onResult, actionLabel }) {
       clearInterval(timer);
       const imageMeta = { width: analysis.width, height: analysis.height, capturedAt: new Date().toISOString() };
       const overlayDataUrl = canvasRef.current?.toDataURL('image/png');
-      onResult({ imageMeta, overlayDataUrl, ...analysis });
+      const sourceDataUrl = imgRef.current?.src || null;
+      onResult({ imageMeta, overlayDataUrl, sourceDataUrl, ...analysis });
       setBusy(false);
       setProgress(100);
     }, 900);
