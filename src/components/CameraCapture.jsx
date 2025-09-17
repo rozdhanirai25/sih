@@ -6,7 +6,6 @@ export default function CameraCapture({ onResult, actionLabel }) {
   const canvasRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [analysis, setAnalysis] = useState(null);
-  const [progress, setProgress] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [snapUrl, setSnapUrl] = useState(null);
@@ -64,16 +63,12 @@ export default function CameraCapture({ onResult, actionLabel }) {
   function handleAnalyze() {
     if (!analysis) { setError('No image selected'); return; }
     setBusy(true);
-    setProgress(0);
-    const timer = setInterval(() => setProgress((p) => Math.min(100, p + 10)), 70);
     setTimeout(() => {
-      clearInterval(timer);
       const imageMeta = { width: analysis.width, height: analysis.height, capturedAt: new Date().toISOString() };
       const overlayDataUrl = canvasRef.current?.toDataURL('image/png');
       const sourceDataUrl = snapUrl;
       onResult({ imageMeta, overlayDataUrl, sourceDataUrl, ...analysis });
       setBusy(false);
-      setProgress(100);
     }, 900);
   }
 
@@ -90,7 +85,7 @@ export default function CameraCapture({ onResult, actionLabel }) {
       {busy && (
         <div className="predicting" aria-live="polite" aria-busy="true">
           <div className="spinner" />
-          <div className="progress"><div className="bar" style={{ width: `${progress}%` }} /></div>
+          <div className="progress indeterminate"><div className="bar" /></div>
         </div>
       )}
       {error && <div className="error-text" role="alert">{error}</div>}
