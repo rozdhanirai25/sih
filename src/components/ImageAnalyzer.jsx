@@ -8,7 +8,6 @@ export default function ImageAnalyzer({ onResult, actionLabel }) {
   const [preview, setPreview] = useState(null);
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState('');
-  const [progress, setProgress] = useState(0);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -79,16 +78,12 @@ export default function ImageAnalyzer({ onResult, actionLabel }) {
     if (!preview) { setError('No image selected'); return; }
     if (!analysis) { setError('Processing image...'); return; }
     setBusy(true);
-    setProgress(0);
-    const timer = setInterval(() => setProgress((p) => Math.min(100, p + 8)), 80);
     setTimeout(() => {
-      clearInterval(timer);
       const imageMeta = { width: analysis.width, height: analysis.height, capturedAt: new Date().toISOString() };
       const overlayDataUrl = canvasRef.current?.toDataURL('image/png');
       const sourceDataUrl = imgRef.current?.src || null;
       onResult({ imageMeta, overlayDataUrl, sourceDataUrl, ...analysis });
       setBusy(false);
-      setProgress(100);
     }, 900);
   }
 
@@ -109,7 +104,7 @@ export default function ImageAnalyzer({ onResult, actionLabel }) {
       {busy && (
         <div className="predicting" aria-live="polite" aria-busy="true">
           <div className="spinner" />
-          <div className="progress"><div className="bar" style={{ width: `${progress}%` }} /></div>
+          <div className="progress indeterminate"><div className="bar" /></div>
         </div>
       )}
       {error && <div className="error-text" role="alert">{error}</div>}
