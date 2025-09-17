@@ -36,10 +36,17 @@ export default function ResultsView({ lastResult, endpointUrl, locale, onBackHom
     <div className="results-panel">
       <div className="results-visuals">
         <div className="image-card">
+          {lastResult.sourceDataUrl ? (
+            <img src={lastResult.sourceDataUrl} alt="Original animal" className="result-image" />
+          ) : (
+            <div className="image-placeholder">No image</div>
+          )}
+        </div>
+        <div className="image-card">
           {lastResult.overlayDataUrl ? (
             <img src={lastResult.overlayDataUrl} alt="Analyzed animal" className="result-image" />
           ) : (
-            <div className="image-placeholder">No image</div>
+            <div className="image-placeholder">No overlay</div>
           )}
         </div>
       </div>
