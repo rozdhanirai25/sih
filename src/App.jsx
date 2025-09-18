@@ -9,6 +9,7 @@ import Footer from './components/Footer.jsx'
 import Features from './components/Features.jsx'
 import About from './components/About.jsx'
 import Contact from './components/Contact.jsx'
+import AiInfographic from './components/AiInfographic.jsx'
 import { languages, t } from './i18n/translations.jsx'
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
         {page === 'home' && (
           <>
             <Landing title={title} ctaText={t(locale, 'start')} locale={locale} onStart={() => setPage('acquire')} />
+            <AiInfographic locale={locale} />
             <Features locale={locale} />
             <About locale={locale} />
             <Contact locale={locale} />
