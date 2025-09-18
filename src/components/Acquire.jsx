@@ -2,7 +2,7 @@ import ImageAnalyzer from './ImageAnalyzer.jsx';
 import CameraCapture from './CameraCapture.jsx';
 import { UploadIcon, CameraIcon, PlayIcon } from './icons.jsx';
 
-export default function Acquire({ onPredicted, analyzeLabel, uploadText, cameraText }) {
+export default function Acquire({ onPredicted, analyzeLabel, uploadText, cameraText, liveCameraText }) {
   return (
     <section className="acquire-section fade-slide" aria-label="Acquire Image">
       <div className="acquire-actions">
@@ -21,7 +21,7 @@ export default function Acquire({ onPredicted, analyzeLabel, uploadText, cameraT
       <div id="cameraSection" className="camera-anchor">
         <div className="section-title">
           <PlayIcon />
-          <span>Live Camera</span>
+          <span>{liveCameraText}</span>
         </div>
         <CameraCapture onResult={onPredicted} actionLabel={analyzeLabel} />
       </div>
