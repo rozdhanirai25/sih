@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import viteLogo from '/vite.svg'
 import './App.css'
 import ResultsView from './components/ResultsView.jsx'
