@@ -4,6 +4,8 @@ import './App.css'
 import ResultsView from './components/ResultsView.jsx'
 import Landing from './components/Landing.jsx'
 import Acquire from './components/Acquire.jsx'
+import Navbar from './components/Navbar.jsx'
+import Footer from './components/Footer.jsx'
 import { languages, t } from './i18n/translations.jsx'
 
 function App() {
@@ -16,28 +18,15 @@ function App() {
 
   return (
     <div className="app-shell">
-      <header className="topbar">
-        <div className="brand">
-          <img src={viteLogo} className="logo" alt="App" />
-          <h1 className="app-title">{title}</h1>
-        </div>
-        <div className="controls">
-          <label className="lang-select">
-            <span>{t(locale, 'language')}</span>
-            <select value={locale} onChange={(e) => setLocale(e.target.value)}>
-              {languages.map((l) => (
-                <option key={l.code} value={l.code}>{l.label}</option>
-              ))}
-            </select>
-          </label>
-          <input
-            className="endpoint-input"
-            placeholder="BPA endpoint URL"
-            value={endpointUrl}
-            onChange={(e) => setEndpointUrl(e.target.value)}
-          />
-        </div>
-      </header>
+      <Navbar
+        title={title}
+        locale={locale}
+        onChangeLocale={setLocale}
+        endpointUrl={endpointUrl}
+        onChangeEndpoint={setEndpointUrl}
+        onStart={() => setPage('acquire')}
+        onNavigate={(p) => setPage(p)}
+      />
 
       <main className="main-content">
         {page === 'home' && (
@@ -55,6 +44,7 @@ function App() {
           <ResultsView lastResult={lastResult} endpointUrl={endpointUrl} locale={locale} onBackHome={() => setPage('home')} />
         )}
       </main>
+      <Footer />
     </div>
   )
 }
