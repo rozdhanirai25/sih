@@ -3,6 +3,14 @@ import { t } from '../i18n/translations.jsx';
 import viteLogo from '/vite.svg';
 
 export default function Navbar({ title, locale, onChangeLocale, endpointUrl, onChangeEndpoint, onStart, onNavigate }) {
+  function go(id) {
+    onNavigate('home');
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
   return (
     <header className="navbar" role="navigation" aria-label="Main">
       <div className="nav-left">
@@ -13,6 +21,9 @@ export default function Navbar({ title, locale, onChangeLocale, endpointUrl, onC
       </div>
       <nav className="nav-links" aria-label="Primary">
         <button className="nav-link" onClick={() => onNavigate('home')}><HomeIcon size={18} color="var(--indigo)" /> {t(locale, 'home')}</button>
+        <button className="nav-link" onClick={() => go('features')}>{t(locale, 'featuresLabel')}</button>
+        <button className="nav-link" onClick={() => go('about')}>{t(locale, 'aboutLabel')}</button>
+        <button className="nav-link" onClick={() => go('contact')}>{t(locale, 'contactLabel')}</button>
         <button className="nav-link" onClick={onStart}><SparkleIcon size={18} color="var(--emerald)" /> {t(locale, 'start')}</button>
       </nav>
       <div className="nav-controls">
