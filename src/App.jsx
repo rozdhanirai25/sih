@@ -20,18 +20,16 @@ function App() {
   const title = useMemo(() => t(locale, 'title'), [locale])
 
   // Scroll-based section reveal
-  if (typeof window !== 'undefined') {
-    const setupReveal = () => {
-      const els = document.querySelectorAll('.reveal-on-scroll');
-      const obs = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add('is-visible');
-        });
-      }, { threshold: 0.12 });
-      els.forEach((el) => obs.observe(el));
-    };
-    queueMicrotask(setupReveal);
-  }
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal-on-scroll');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('is-visible');
+      });
+    }, { threshold: 0.12 });
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <div className="app-shell theme-dark">
