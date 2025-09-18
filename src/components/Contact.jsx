@@ -33,7 +33,7 @@ export default function Contact({ locale }) {
       <div className="social-links" aria-label="Social links">
         <a href="#" aria-label="Twitter" className="social-link">Twitter</a>
         <a href="#" aria-label="LinkedIn" className="social-link">LinkedIn</a>
-        <a href="#" aria-label="GitHub" className="social-link">GitHub</a>
+        <a href="https://github.com/stsenthamiz/sih.git " aria-label="GitHub" className="social-link">GitHub</a>
       </div>
     </section>
   );
