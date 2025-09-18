@@ -29,6 +29,7 @@
 @keyframes glowPulse { 0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.6);} 70% { box-shadow: 0 0 0 14px rgba(16,185,129,0);} 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0);} }
 .hero-illustration { position: relative; display: grid; place-items: center; }
 .hero-art { width: 100%; max-width: 420px; height: auto; filter: drop-shadow(0 10px 30px rgba(0,224,255,0.35)); mix-blend-mode: screen; }
+.hero-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); opacity: 0.95; }
 .silhouette { width: 100%; height: 160px; border-radius: 20px; filter: contrast(0.9) saturate(1.1); background: linear-gradient(135deg, #eef2ff, #ecfeff); }
 .silhouette.cattle { mask: radial-gradient(160px 80px at 30% 50%, #000 70%, transparent 72%), radial-gradient(200px 120px at 80% 50%, #000 60%, transparent 62%); }
 .silhouette.buffalo { margin-top: 10px; mask: radial-gradient(160px 80px at 35% 50%, #000 70%, transparent 72%), radial-gradient(190px 120px at 75% 50%, #000 60%, transparent 62%); }
