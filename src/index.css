@@ -15,7 +15,7 @@ a { font-weight: 500; color: #1f2937; text-decoration: none; }
 a:hover { color: #111827; }
 
 html, body, #root { height: 100%; }
-body { margin: 0; min-width: 320px; min-height: 100vh; background: #ffffff; color: #111827; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,0.10), transparent 60%), radial-gradient(1000px 500px at 100% 0%, rgba(16,185,129,0.10), transparent 55%), linear-gradient(#ffffff, #f7f9fb); color: #111827; }
 
 h1 { font-size: 2rem; line-height: 1.2; }
 
