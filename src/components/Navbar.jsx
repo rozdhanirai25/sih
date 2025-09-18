@@ -12,8 +12,8 @@ export default function Navbar({ title, locale, onChangeLocale, endpointUrl, onC
         </button>
       </div>
       <nav className="nav-links" aria-label="Primary">
-        <button className="nav-link" onClick={() => onNavigate('home')}><HomeIcon size={18} /> {t(locale, 'home')}</button>
-        <button className="nav-link" onClick={onStart}><SparkleIcon size={18} /> {t(locale, 'start')}</button>
+        <button className="nav-link" onClick={() => onNavigate('home')}><HomeIcon size={18} color="var(--indigo)" /> {t(locale, 'home')}</button>
+        <button className="nav-link" onClick={onStart}><SparkleIcon size={18} color="var(--emerald)" /> {t(locale, 'start')}</button>
       </nav>
       <div className="nav-controls">
         <label className="lang-select">
