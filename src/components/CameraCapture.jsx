@@ -12,18 +12,43 @@ export default function CameraCapture({ onResult, actionLabel }) {
 
   useEffect(() => {
     let stream;
-    (async () => {
+    const start = async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-          setReady(true);
+        if (!navigator.mediaDevices?.getUserMedia) {
+          throw new Error('Camera not supported in this browser');
         }
-      } catch {
+        const candidates = [
+          { video: { facingMode: { ideal: 'environment' } } },
+          { video: { facingMode: 'environment' } },
+          { video: true },
+        ];
+        let lastErr;
+        for (const c of candidates) {
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            stream = await navigator.mediaDevices.getUserMedia(c);
+            break;
+          } catch (e) {
+            lastErr = e;
+          }
+        }
+        if (!stream) throw lastErr || new Error('Unable to access camera');
+
+        const video = videoRef.current;
+        if (!video) return;
+        video.srcObject = stream;
+        await new Promise((resolve) => {
+          const done = () => { video.removeEventListener('loadedmetadata', done); resolve(); };
+          video.addEventListener('loadedmetadata', done);
+        });
+        try { await video.play(); } catch (_) { /* autoplay might be blocked; user can press Capture later */ }
+        setReady(true);
+      } catch (e) {
+        setError(e?.message || 'Unable to access camera');
         setReady(false);
       }
-    })();
+    };
+    start();
     return () => {
       if (stream) stream.getTracks().forEach((t) => t.stop());
     };
@@ -34,6 +59,8 @@ export default function CameraCapture({ onResult, actionLabel }) {
       setError('');
       const video = videoRef.current;
       const canvas = canvasRef.current;
+      if (!video || !canvas) { setError('Camera not ready'); return; }
+      if (!video.videoWidth || !video.videoHeight) { setError('Camera initializing, try again'); return; }
       const ctx = canvas.getContext('2d');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
@@ -45,7 +72,6 @@ export default function CameraCapture({ onResult, actionLabel }) {
       setSnapUrl(dataUrl);
       const result = analyzeImage(img);
       setAnalysis(result);
-      // draw overlay on the same canvas
       ctx.drawImage(img, 0, 0);
       ctx.lineWidth = 3;
       ctx.strokeStyle = '#00e0ff';
@@ -55,7 +81,7 @@ export default function CameraCapture({ onResult, actionLabel }) {
       const dot = (p) => { ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI * 2); ctx.fill(); };
       link(L.muzzle, L.withers); link(L.withers, L.rump); link(L.chestLeft, L.chestRight);
       dot(L.muzzle); dot(L.withers); dot(L.rump); dot(L.chestLeft); dot(L.chestRight);
-    } catch {
+    } catch (e) {
       setError('Camera capture failed');
     }
   }
@@ -75,7 +101,7 @@ export default function CameraCapture({ onResult, actionLabel }) {
   return (
     <div className="camera-container">
       <div className="camera-stage">
-        <video ref={videoRef} playsInline muted className="camera-video" />
+        <video ref={videoRef} autoPlay playsInline muted className="camera-video" />
         <canvas ref={canvasRef} className="overlay-canvas" />
       </div>
       <div className="camera-actions">
