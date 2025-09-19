@@ -61,6 +61,7 @@ export default function CameraCapture({ onResult, actionLabel }) {
       const canvas = canvasRef.current;
       if (!video || !canvas) { setError('Camera not ready'); return; }
       if (!video.videoWidth || !video.videoHeight) { setError('Camera initializing, try again'); return; }
+      if (video.paused) { try { await video.play(); } catch (_) {} }
       const ctx = canvas.getContext('2d');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
